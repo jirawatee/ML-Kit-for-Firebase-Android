@@ -1,0 +1,10 @@
+<resources>
+	<string-array name="class_name">
+		<item>Text Recognition</item>
+		<item>Barcode Scanning</item>
+		<item>Face Detection</item>
+		<item>Image Labeling</item>
+		<item>Landmark Dectection</item>
+		<item>Custom Model</item>
+	</string-array>
+</resources>

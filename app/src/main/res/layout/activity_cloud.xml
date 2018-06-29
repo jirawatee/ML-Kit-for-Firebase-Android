@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="@dimen/margin_default"
+	tools:context=".TextActivity">
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/section_bottom">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			tools:ignore="UseCompoundDrawables">
+
+			<ImageView
+				android:id="@+id/image_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:adjustViewBounds="true"
+				android:contentDescription="@string/app_name"
+				android:src="@drawable/no_image" />
+
+			<TextView
+				android:id="@+id/text_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				android:textStyle="bold"
+				android:layout_marginTop="@dimen/margin_default"/>
+
+		</LinearLayout>
+
+	</ScrollView>
+
+	<LinearLayout
+		android:id="@+id/section_bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/btn_device"
+			style="@style/CustomButton"
+			android:text="@string/btn_device" />
+
+		<Button
+			android:id="@+id/btn_cloud"
+			style="@style/CustomButton"
+			android:text="@string/btn_cloud" />
+
+	</LinearLayout>
+
+</RelativeLayout>

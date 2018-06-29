@@ -55,7 +55,6 @@ public class ImageActivity extends BaseActivity implements View.OnClickListener 
 						public void onSuccess(List<FirebaseVisionLabel> labels) {
 							for (FirebaseVisionLabel label : labels) {
 								mTextView.append(label.getLabel() + "\n");
-								mTextView.append(label.getEntityId() + "\n");
 								mTextView.append(label.getConfidence() + "\n\n");
 							}
 						}

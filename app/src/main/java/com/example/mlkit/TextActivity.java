@@ -20,8 +20,6 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
 
-import java.util.List;
-
 public class TextActivity extends BaseActivity implements View.OnClickListener {
 	private Bitmap mBitmap;
 	private ImageView mImageView;
@@ -103,21 +101,22 @@ public class TextActivity extends BaseActivity implements View.OnClickListener {
 		});
 	}
 
-	private void processTextRecognitionResult(FirebaseVisionText texts) {
+	private void processTextRecognitionResult(FirebaseVisionText firebaseVisionText) {
 		mTextView.setText(null);
-		List<FirebaseVisionText.Block> blocks = texts.getBlocks();
-		if (blocks.size() == 0) {
+		if (firebaseVisionText.getBlocks().size() == 0) {
 			mTextView.setText(R.string.error_not_found);
 			return;
 		}
-		for (int i = 0; i < blocks.size(); i++) {
-			List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
-			for (int j = 0; j < lines.size(); j++) {
-				List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
-				for (int k = 0; k < elements.size(); k++) {
-					mTextView.append(elements.get(k).getText() + " ");
+		for (FirebaseVisionText.Block block : firebaseVisionText.getBlocks()) {
+			mTextView.append(block.getText());
+			/*
+			 * In case you want to extract each line
+			for (FirebaseVisionText.Line line: block.getLines()) {
+				for (FirebaseVisionText.Element element: line.getElements()) {
+					mTextView.append(element.getText() + " ");
 				}
 			}
+			*/
 		}
 	}
 
@@ -144,14 +143,18 @@ public class TextActivity extends BaseActivity implements View.OnClickListener {
 		});
 	}
 
-	private void processCloudTextRecognitionResult(FirebaseVisionCloudText text) {
+	private void processCloudTextRecognitionResult(FirebaseVisionCloudText firebaseVisionCloudText) {
 		mTextView.setText(null);
-		if (text == null) {
+		if (firebaseVisionCloudText == null) {
 			mTextView.setText(R.string.error_not_found);
 			return;
 		}
+
+		mTextView.setText(firebaseVisionCloudText.getText());
+		/*
+		 * In case you want to get Paragraph, Word, Symbol
 		StringBuilder sentenceStr = new StringBuilder();
-		List<FirebaseVisionCloudText.Page> pages = text.getPages();
+		List<FirebaseVisionCloudText.Page> pages = firebaseVisionCloudText.getPages();
 		for (int i = 0; i < pages.size(); i++) {
 			FirebaseVisionCloudText.Page page = pages.get(i);
 			List<FirebaseVisionCloudText.Block> blocks = page.getBlocks();
@@ -177,5 +180,6 @@ public class TextActivity extends BaseActivity implements View.OnClickListener {
 			}
 		}
 		mTextView.append("\n" + sentenceStr);
+		*/
 	}
 }

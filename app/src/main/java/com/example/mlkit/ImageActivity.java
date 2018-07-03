@@ -70,9 +70,9 @@ public class ImageActivity extends BaseActivity implements View.OnClickListener 
 				if (mBitmap != null) {
 					MyHelper.showDialog(this);
 					FirebaseVisionCloudDetectorOptions options = new FirebaseVisionCloudDetectorOptions.Builder()
-									.setModelType(FirebaseVisionCloudDetectorOptions.LATEST_MODEL)
-									.setMaxResults(5)
-									.build();
+							.setModelType(FirebaseVisionCloudDetectorOptions.LATEST_MODEL)
+							.setMaxResults(5)
+							.build();
 
 					FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mBitmap);
 					FirebaseVisionCloudLabelDetector detector = FirebaseVision.getInstance().getVisionCloudLabelDetector(options);

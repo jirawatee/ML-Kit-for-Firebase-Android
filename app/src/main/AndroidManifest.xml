@@ -35,7 +35,7 @@
 
 		<meta-data
 			android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-			android:value="barcode" />
+			android:value="ocr, face, barcode, label" />
 
 		<provider
 			android:name="android.support.v4.content.FileProvider"

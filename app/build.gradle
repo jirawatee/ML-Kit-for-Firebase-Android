@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 28
-	buildToolsVersion "28.0.1"
+	buildToolsVersion "28.0.3"
 	defaultConfig {
 		applicationId "com.example.mlkit"
 		minSdkVersion 27
@@ -36,10 +36,10 @@ android {
 }
 
 dependencies {
-	implementation('com.android.support:appcompat-v7:27.1.1') {
+	implementation('com.android.support:appcompat-v7:28.0.0') {
 		force = true
 	}
-	implementation 'com.google.firebase:firebase-core:16.0.1'
+	implementation 'com.google.firebase:firebase-core:16.0.3'
 	implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
 	implementation 'com.google.firebase:firebase-ml-model-interpreter:16.0.0'
 	implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'

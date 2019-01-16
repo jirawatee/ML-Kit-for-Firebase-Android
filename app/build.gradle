@@ -5,7 +5,7 @@ android {
 	buildToolsVersion "28.0.3"
 	defaultConfig {
 		applicationId "com.example.mlkit"
-		minSdkVersion 27
+		minSdkVersion 28
 		targetSdkVersion 28
 		versionCode 1
 		versionName "1.0"

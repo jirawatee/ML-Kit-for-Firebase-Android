@@ -13,11 +13,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
 
 import java.util.List;
 
@@ -29,7 +27,6 @@ public class FaceActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_device);
-
 		mImageView = findViewById(R.id.image_view);
 		mTextView = findViewById(R.id.text_view);
 	}
@@ -55,7 +52,7 @@ public class FaceActivity extends BaseActivity {
 					if (bitmap != null) {
 						mTextView.setText(null);
 						mImageView.setImageBitmap(bitmap);
-						barcodeDetector(bitmap);
+						detectFaces(bitmap);
 					}
 					break;
 				case RC_TAKE_PICTURE:
@@ -63,24 +60,21 @@ public class FaceActivity extends BaseActivity {
 					if (bitmap != null) {
 						mTextView.setText(null);
 						mImageView.setImageBitmap(bitmap);
-						barcodeDetector(bitmap);
+						detectFaces(bitmap);
 					}
 					break;
 			}
 		}
 	}
 
-	private void barcodeDetector(Bitmap bitmap) {
+	private void detectFaces(Bitmap bitmap) {
 		FirebaseVisionFaceDetectorOptions options = new FirebaseVisionFaceDetectorOptions.Builder()
-				.setModeType(FirebaseVisionFaceDetectorOptions.ACCURATE_MODE)
-				.setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-				.setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-				.setMinFaceSize(0.15f)
-				.setTrackingEnabled(true)
+				.setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+				.setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+				.setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
 				.build();
-
-		FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 		FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+		FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 		detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionFace>>() {
 			@Override
 			public void onSuccess(List<FirebaseVisionFace> faces) {
@@ -102,10 +96,6 @@ public class FaceActivity extends BaseActivity {
 		for (FirebaseVisionFace face : faces) {
 			
 			// If landmark detection was enabled (mouth, ears, eyes, cheeks, and nose available):
-			FirebaseVisionFaceLandmark leftEar = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EAR);
-			if (leftEar != null) {
-				FirebaseVisionPoint leftEarPos = leftEar.getPosition();
-			}
 
 			// If classification was enabled:
 			if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
@@ -116,11 +106,6 @@ public class FaceActivity extends BaseActivity {
 			}
 			if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
 				rightEyeOpenProb = face.getRightEyeOpenProbability();
-			}
-
-			// If face tracking was enabled:
-			if (face.getTrackingId() != FirebaseVisionFace.INVALID_ID) {
-				int id = face.getTrackingId();
 			}
 
 			result.append("Smile: ");

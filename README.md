@@ -2,9 +2,8 @@
 ML Kit for Firebase code guideline for Android developers
 
 ## Prerequisites
-* Supported Android 4.0.1 (Ice Cream Sandwich) or newer
-* Google Play services 15.0.0 or newer
-* Android Studio 3.1.3 or higher
+* Supported Android 4.1 or newer
+* Android Studio 3.3.2 or higher
 * google-services.json in app-level folder
 
 ## Features

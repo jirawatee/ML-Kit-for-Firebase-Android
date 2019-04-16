@@ -14,16 +14,16 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
+import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
+import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
 import com.google.firebase.ml.custom.FirebaseModelInputs;
 import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelManager;
 import com.google.firebase.ml.custom.FirebaseModelOptions;
 import com.google.firebase.ml.custom.FirebaseModelOutputs;
-import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
-import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
-import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +43,7 @@ public class CustomActivity extends BaseActivity {
 
 	// Name of the model file hosted with Firebase
 	private static final String HOSTED_MODEL_NAME = "mobilenet_v1_224_quant";
+	private static final String LOCAL_MODEL_NAME = "my_local_model";
 	private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
 
 	// Name of the label file stored in Assets.
@@ -89,23 +90,37 @@ public class CustomActivity extends BaseActivity {
 					.setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
 					.setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
 					.build();
-			FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().requireWifi().build();
-			FirebaseLocalModelSource localModelSource = new FirebaseLocalModelSource.Builder("asset")
+			FirebaseModelDownloadConditions.Builder conditionsBuilder = new FirebaseModelDownloadConditions.Builder().requireWifi();
+
+			/*
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				// Enable advanced conditions on Android Nougat and newer.
+				conditionsBuilder = conditionsBuilder.requireCharging().requireDeviceIdle();
+			}
+			*/
+
+			FirebaseModelDownloadConditions conditions = conditionsBuilder.build();
+
+
+			FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
 					.setAssetFilePath(LOCAL_MODEL_ASSET)
 					.build();
 
-			FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder(HOSTED_MODEL_NAME)
+			FirebaseRemoteModel cloudModel = new FirebaseRemoteModel.Builder(HOSTED_MODEL_NAME)
 					.enableModelUpdates(true)
 					.setInitialDownloadConditions(conditions)
 					.setUpdatesDownloadConditions(conditions)
 					.build();
+
 			FirebaseModelManager manager = FirebaseModelManager.getInstance();
-			manager.registerLocalModelSource(localModelSource);
-			manager.registerCloudModelSource(cloudSource);
+			manager.registerLocalModel(localModel);
+			manager.registerRemoteModel(cloudModel);
+
 			FirebaseModelOptions modelOptions = new FirebaseModelOptions.Builder()
-					.setCloudModelName(HOSTED_MODEL_NAME)
-					.setLocalModelName("asset")
+					.setLocalModelName(LOCAL_MODEL_NAME)
+					.setRemoteModelName(HOSTED_MODEL_NAME)
 					.build();
+
 			mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
 		} catch (FirebaseMLException e) {
 			mTextView.setText(R.string.error_setup_model);

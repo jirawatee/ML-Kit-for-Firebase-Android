@@ -14,6 +14,7 @@ ML Kit for Firebase code guideline for Android developers
 * Landmark Recognition
 * Custom Model
 * Language Identification
+* Smart Reply
 
 ## Screenshots
 <table width="100%">

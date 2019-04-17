@@ -49,6 +49,7 @@ dependencies {
 
 	implementation 'com.google.firebase:firebase-ml-natural-language:18.2.0'
 	implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:18.0.3'
+	implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:18.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

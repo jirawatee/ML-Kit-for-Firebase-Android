@@ -36,8 +36,12 @@ public class LanguageActivity extends AppCompatActivity implements View.OnClickL
 		txt.setText(null);
 		String text = edt.getText().toString().trim();
 		switch (view.getId()) {
-			case R.id.btn1: identifyLanguage(text); break;
-			case R.id.btn2: identifyAllLanguages(text); break;
+			case R.id.btn1:
+				identifyLanguage(text);
+				break;
+			case R.id.btn2:
+				identifyAllLanguages(text);
+				break;
 		}
 	}
 
@@ -56,7 +60,7 @@ public class LanguageActivity extends AppCompatActivity implements View.OnClickL
 		}).addOnFailureListener(new OnFailureListener() {
 			@Override
 			public void onFailure(@NonNull Exception e) {
-				txt.setText(getString(R.string.language_identification_error_model));
+				txt.setText(e.getMessage());
 			}
 		});
 	}
@@ -75,7 +79,7 @@ public class LanguageActivity extends AppCompatActivity implements View.OnClickL
 		}).addOnFailureListener(new OnFailureListener() {
 			@Override
 			public void onFailure(@NonNull Exception e) {
-				txt.setText(getString(R.string.language_identification_error_model));
+				txt.setText(e.getMessage());
 			}
 		});
 	}

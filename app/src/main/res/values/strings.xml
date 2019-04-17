@@ -18,5 +18,7 @@
 	<string name="language_identification_btn2">Detect All Languages</string>
 	<string name="language_identification_result">Language: %s</string>
 	<string name="language_identification_error">Can’t identify language.</string>
-	<string name="language_identification_error_model">Model couldn’t be loaded</string>
+
+	<string name="smart_reply_btn">Suggest Me Replying Messages</string>
+	<string name="smart_reply_error">The conversation\'s language isn\'t supported, so the result doesn\'t contain any suggestions.</string>
 </resources>

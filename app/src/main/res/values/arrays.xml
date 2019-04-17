@@ -6,5 +6,6 @@
 		<item>Image Labeling</item>
 		<item>Landmark Dectection</item>
 		<item>Custom Model</item>
+		<item>Language Identification</item>
 	</string-array>
 </resources>

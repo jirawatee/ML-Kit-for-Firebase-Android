@@ -13,6 +13,7 @@ ML Kit for Firebase code guideline for Android developers
 * Image Labeling
 * Landmark Recognition
 * Custom Model
+* Language Identification
 
 ## Screenshots
 <table width="100%">

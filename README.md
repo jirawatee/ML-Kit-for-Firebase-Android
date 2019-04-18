@@ -3,7 +3,7 @@ ML Kit for Firebase code guideline for Android developers
 
 ## Prerequisites
 * Supported Android 4.1 or newer
-* Android Studio 3.3.2 or higher
+* Android Studio 3.4.0 or higher
 * google-services.json in app-level folder
 
 ## Features
@@ -27,6 +27,10 @@ ML Kit for Firebase code guideline for Android developers
 	  <th><img src="https://user-images.githubusercontent.com/1763410/42051837-4bdec4ec-7b37-11e8-8f9e-a6b4865c2c16.png" width="100%"></th>
 	  <th><img src="https://user-images.githubusercontent.com/1763410/42051851-5c0a67b8-7b37-11e8-92e1-44fb8b785668.png" width="100%"></th>
 	  <th><img src="https://user-images.githubusercontent.com/1763410/42051879-6e48fffc-7b37-11e8-9655-c43392c6470a.png" width="100%"></th>
+	</tr>
+	<tr>
+		<th><img src="https://user-images.githubusercontent.com/1763410/56343420-ebeb1280-61e4-11e9-8529-83342d1bdd10.png" width="100%"></th>
+		<th><img src="https://user-images.githubusercontent.com/1763410/56341810-6e250800-61e0-11e9-9752-d87ed6340d90.png" width="100%"></th>
 	</tr>
 </table>
 

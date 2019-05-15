@@ -136,8 +136,9 @@ public class TextActivity extends BaseActivity implements View.OnClickListener {
 		}
 		for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
 			mTextView.append(block.getText());
+
+			//In case you want to extract each line
 			/*
-			 * In case you want to extract each line
 			for (FirebaseVisionText.Line line: block.getLines()) {
 				for (FirebaseVisionText.Element element: line.getElements()) {
 					mTextView.append(element.getText() + " ");

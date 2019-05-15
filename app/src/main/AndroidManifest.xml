@@ -51,6 +51,7 @@
 		</activity>
 		<activity android:name=".LanguageActivity" android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 		<activity android:name=".SmartReplyActivity" android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+		<activity android:name=".TranslateActivity" android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
 
 		<meta-data
 			android:name="com.google.firebase.ml.vision.DEPENDENCIES"

@@ -12,7 +12,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		tools:text="@string/app_name"/>
+		android:text="@string/translate_loading"/>
 
 	<EditText
 		android:id="@+id/edt"
@@ -21,7 +21,7 @@
 		android:layout_above="@+id/btn"
 		android:maxLines="1"
 		android:inputType="text"
-		android:hint="@string/language_identification_hint"
+		android:hint="@string/translate_edt"
 		android:importantForAutofill="no" />
 
 	<Button
@@ -29,6 +29,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/smart_reply_btn"/>
+		android:enabled="false"
+		android:text="@string/translate_btn"/>
 
 </RelativeLayout>

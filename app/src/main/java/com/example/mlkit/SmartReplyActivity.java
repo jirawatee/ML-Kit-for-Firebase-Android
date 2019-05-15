@@ -39,10 +39,8 @@ public class SmartReplyActivity extends AppCompatActivity implements View.OnClic
 		txt.setText(null);
 		String text = edt.getText().toString().trim();
 		chatHistory.add(FirebaseTextMessage.createForRemoteUser(text, System.currentTimeMillis(), REMOTE_USER_ID));
-		switch (view.getId()) {
-			case R.id.btn:
-				suggestReplyingMessages(chatHistory);
-				break;
+		if (view.getId() == R.id.btn) {
+			suggestReplyingMessages(chatHistory);
 		}
 	}
 

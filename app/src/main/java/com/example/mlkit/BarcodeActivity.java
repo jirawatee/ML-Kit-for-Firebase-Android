@@ -69,6 +69,8 @@ public class BarcodeActivity extends BaseActivity {
 
 	private void barcodeDetector(Bitmap bitmap) {
 		FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+		//FirebaseVisionBarcodeDetectorOptions.Builder builder = new FirebaseVisionBarcodeDetectorOptions.Builder();
+		//FirebaseVisionBarcodeDetectorOptions options = builder.setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE).build();
 		FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();
 		detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
 			@Override

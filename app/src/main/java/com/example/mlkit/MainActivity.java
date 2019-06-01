@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 			CustomActivity.class,
 			LanguageActivity.class,
 			SmartReplyActivity.class,
-			TranslateActivity.class
+			TranslateActivity.class,
+			AutoMLActivity.class
 	};
 
 	@Override

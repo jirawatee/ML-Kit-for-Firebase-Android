@@ -16,6 +16,7 @@ ML Kit for Firebase code guideline for Android developers
 * Language Identification
 * Smart Reply
 * Translate Text
+* AutoML Vision Edge
 
 ## Screenshots
 <table width="100%">

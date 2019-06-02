@@ -61,10 +61,12 @@ ML Kit for Firebase code guideline for Android developers
 			<img src="https://user-images.githubusercontent.com/1763410/58763092-0e60a180-8581-11e9-951b-6282d22fdb95.png" width="100%">
 			AutoML Vision Edge
 		</td>
-		<td align="center" colspan="3">
+		<td align="center">
 			<img src="https://user-images.githubusercontent.com/1763410/42051837-4bdec4ec-7b37-11e8-8f9e-a6b4865c2c16.png" width="100%">
 			Custom
 		</td>
+		<td></td>
+		<td></td>
   	</tr>
 </table>
 ## Blog

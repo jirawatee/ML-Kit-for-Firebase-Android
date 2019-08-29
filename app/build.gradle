@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion compileAndTargetSdk
-	buildToolsVersion "29.0.0"
+	buildToolsVersion "29.0.2"
 	defaultConfig {
 		applicationId "com.example.mlkit"
 		minSdkVersion 21
@@ -37,19 +37,19 @@ android {
 
 dependencies {
 	implementation 'androidx.appcompat:appcompat:1.0.2'
-	implementation 'com.google.firebase:firebase-core:17.0.0'
+	implementation 'com.google.firebase:firebase-core:17.2.0'
 
-	implementation 'com.google.firebase:firebase-ml-vision:21.0.0'
-	implementation 'com.google.firebase:firebase-ml-vision-automl:17.0.0'
+	implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
+	implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.1'
 	implementation 'com.google.firebase:firebase-ml-vision-face-model:18.0.0'
 	implementation 'com.google.firebase:firebase-ml-vision-image-label-model:18.0.0'
 
-	implementation 'com.google.firebase:firebase-ml-model-interpreter:20.0.0'
+	implementation 'com.google.firebase:firebase-ml-model-interpreter:21.0.0'
 
-	implementation 'com.google.firebase:firebase-ml-natural-language:20.0.0'
-	implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:20.0.0'
-	implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:20.0.0'
-	implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.0'
+	implementation 'com.google.firebase:firebase-ml-natural-language:21.0.1'
+	implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:20.0.4'
+	implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:20.0.4'
+	implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

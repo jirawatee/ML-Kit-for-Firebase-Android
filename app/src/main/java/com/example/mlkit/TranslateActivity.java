@@ -1,12 +1,13 @@
 package com.example.mlkit;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +36,7 @@ public class TranslateActivity extends AppCompatActivity implements View.OnClick
 				.build();
 		EnThTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options);
 
-		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().requireWifi().build();
+		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
 		EnThTranslator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
 			@Override
 			public void onSuccess(Void v) {

@@ -5,9 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.mlkit.helpers.MyHelper;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,9 +40,7 @@ public class AutoMLActivity extends BaseActivity {
 		mImageView = findViewById(R.id.image_view);
 		mTextView = findViewById(R.id.text_view);
 
-		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-				.requireWifi()
-				.build();
+		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
 
 		FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
 				.setAssetFilePath("automl/manifest.json")
@@ -61,7 +60,7 @@ public class AutoMLActivity extends BaseActivity {
 				.Builder()
 				.setLocalModelName(LOCAL_MODEL_NAME)
 				.setRemoteModelName(REMOTE_MODEL_NAME)
-				.setConfidenceThreshold(0.6f)
+				.setConfidenceThreshold(0.5f)
 				.build();
 
 		try {

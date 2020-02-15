@@ -11,14 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.mlkit.helpers.MyHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLLocalModel;
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLRemoteModel;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
@@ -30,7 +32,8 @@ public class AutoMLActivity extends BaseActivity {
 	private ImageView mImageView;
 	private TextView mTextView;
 	private static final String REMOTE_MODEL_NAME = "LINE_FRIENDS";
-	private static final String LOCAL_MODEL_NAME = "my_local_model";
+	private FirebaseAutoMLLocalModel localModel;
+	private FirebaseAutoMLRemoteModel remoteModel;
 	private FirebaseVisionImageLabeler labeler;
 
 	@Override
@@ -40,35 +43,37 @@ public class AutoMLActivity extends BaseActivity {
 		mImageView = findViewById(R.id.image_view);
 		mTextView = findViewById(R.id.text_view);
 
-		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
 
-		FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
-				.setAssetFilePath("automl/manifest.json")
-				.build();
+		localModel = new FirebaseAutoMLLocalModel.Builder().setAssetFilePath("automl/manifest.json").build();
+		remoteModel = new FirebaseAutoMLRemoteModel.Builder(REMOTE_MODEL_NAME).build();
 
-		FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder(REMOTE_MODEL_NAME)
-				.enableModelUpdates(true)
-				.setInitialDownloadConditions(conditions)
-				.setUpdatesDownloadConditions(conditions)
-				.build();
+		FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().requireWifi().build();
+		FirebaseModelManager.getInstance().download(remoteModel, conditions).addOnCompleteListener(new OnCompleteListener<Void>() {
+			@Override
+			public void onComplete(@NonNull Task<Void> task) {
+				// Success.
+			}
+		});
 
-		FirebaseModelManager manager = FirebaseModelManager.getInstance();
-		manager.registerLocalModel(localModel);
-		manager.registerRemoteModel(remoteModel);
-
-		FirebaseVisionOnDeviceAutoMLImageLabelerOptions labelerOptions = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions
-				.Builder()
-				.setLocalModelName(LOCAL_MODEL_NAME)
-				.setRemoteModelName(REMOTE_MODEL_NAME)
-				.setConfidenceThreshold(0.5f)
-				.build();
-
-		try {
-			labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(labelerOptions);
-		} catch (FirebaseMLException e) {
-			mTextView.setTextColor(Color.RED);
-			mTextView.setText(e.getMessage());
-		}
+		FirebaseModelManager.getInstance().isModelDownloaded(remoteModel).addOnSuccessListener(new OnSuccessListener<Boolean>() {
+			@Override
+			public void onSuccess(Boolean isDownloaded) {
+				FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder;
+				if (isDownloaded) {
+					optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel);
+				} else {
+					optionsBuilder = new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(localModel);
+				}
+				FirebaseVisionOnDeviceAutoMLImageLabelerOptions options = optionsBuilder.setConfidenceThreshold(0.5f).build();
+				try {
+					labeler = FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(options);
+				} catch (FirebaseMLException e) {
+					e.printStackTrace();
+					mTextView.setTextColor(Color.RED);
+					mTextView.setText(e.getMessage());
+				}
+			}
+		});
 	}
 
 	@Override

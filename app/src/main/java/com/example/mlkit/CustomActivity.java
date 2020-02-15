@@ -5,24 +5,27 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.mlkit.helpers.MyHelper;
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel;
+import com.google.firebase.ml.custom.FirebaseCustomLocalModel;
+import com.google.firebase.ml.custom.FirebaseCustomRemoteModel;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
 import com.google.firebase.ml.custom.FirebaseModelInputs;
 import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelOptions;
+import com.google.firebase.ml.custom.FirebaseModelInterpreterOptions;
 import com.google.firebase.ml.custom.FirebaseModelOutputs;
 
 import java.io.BufferedReader;
@@ -43,8 +46,9 @@ public class CustomActivity extends BaseActivity {
 
 	// Name of the model file hosted with Firebase
 	private static final String HOSTED_MODEL_NAME = "mobilenet_v1_224_quant";
-	private static final String LOCAL_MODEL_NAME = "my_local_model";
 	private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
+	private FirebaseCustomLocalModel localModel;
+	private FirebaseCustomRemoteModel remoteModel;
 
 	// Name of the label file stored in Assets.
 	private static final String LABEL_PATH = "labels.txt";
@@ -90,38 +94,41 @@ public class CustomActivity extends BaseActivity {
 					.setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
 					.setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
 					.build();
-			FirebaseModelDownloadConditions.Builder conditionsBuilder = new FirebaseModelDownloadConditions.Builder().requireWifi();
 
+			localModel = new FirebaseCustomLocalModel.Builder().setAssetFilePath(LOCAL_MODEL_ASSET).build();
+			remoteModel = new FirebaseCustomRemoteModel.Builder(HOSTED_MODEL_NAME).build();
+
+			FirebaseModelDownloadConditions.Builder conditionsBuilder = new FirebaseModelDownloadConditions.Builder().requireWifi();
 			/*
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 				// Enable advanced conditions on Android Nougat and newer.
 				conditionsBuilder = conditionsBuilder.requireCharging().requireDeviceIdle();
 			}
 			*/
-
 			FirebaseModelDownloadConditions conditions = conditionsBuilder.build();
+			FirebaseModelManager.getInstance().download(remoteModel, conditions).addOnCompleteListener(new OnCompleteListener<Void>() {
+				@Override
+				public void onComplete(@NonNull Task<Void> task) {
+					// Success.
+				}
+			});
 
-
-			FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
-					.setAssetFilePath(LOCAL_MODEL_ASSET)
-					.build();
-
-			FirebaseRemoteModel cloudModel = new FirebaseRemoteModel.Builder(HOSTED_MODEL_NAME)
-					.enableModelUpdates(true)
-					.setInitialDownloadConditions(conditions)
-					.setUpdatesDownloadConditions(conditions)
-					.build();
-
-			FirebaseModelManager manager = FirebaseModelManager.getInstance();
-			manager.registerLocalModel(localModel);
-			manager.registerRemoteModel(cloudModel);
-
-			FirebaseModelOptions modelOptions = new FirebaseModelOptions.Builder()
-					.setLocalModelName(LOCAL_MODEL_NAME)
-					.setRemoteModelName(HOSTED_MODEL_NAME)
-					.build();
-
-			mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
+			FirebaseModelManager.getInstance().isModelDownloaded(remoteModel).addOnSuccessListener(new OnSuccessListener<Boolean>() {
+				@Override
+				public void onSuccess(Boolean isDownloaded) {
+					FirebaseModelInterpreterOptions options;
+					if (isDownloaded) {
+						options = new FirebaseModelInterpreterOptions.Builder(remoteModel).build();
+					} else {
+						options = new FirebaseModelInterpreterOptions.Builder(localModel).build();
+					}
+					try {
+						mInterpreter = FirebaseModelInterpreter.getInstance(options);
+					} catch (FirebaseMLException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		} catch (FirebaseMLException e) {
 			mTextView.setText(R.string.error_setup_model);
 			e.printStackTrace();

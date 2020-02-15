@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import androidx.appcompat.app.AlertDialog;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.mlkit.R;
 
@@ -102,7 +105,6 @@ public class MyHelper {
 			decodeStream(context.getContentResolver().openInputStream(uri), null, options);
 			int photoW = options.outWidth;
 			int photoH = options.outHeight;
-
 			options.inSampleSize = Math.min(photoW / view.getWidth(), photoH / view.getHeight());
 			return compressImage(imageFile, BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options));
 		} catch (FileNotFoundException e) {
@@ -112,16 +114,29 @@ public class MyHelper {
 	}
 
 	public static Bitmap resizeImage(File imageFile, String path, ImageView view) {
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		decodeFile(path, options);
+		ExifInterface exif = null;
+		try {
+			exif = new ExifInterface(path);
+			int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+			int rotationInDegrees = exifToDegrees(rotation);
 
-		int photoW = options.outWidth;
-		int photoH = options.outHeight;
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			decodeFile(path, options);
 
-		options.inJustDecodeBounds = false;
-		options.inSampleSize = Math.min(photoW / view.getWidth(), photoH / view.getHeight());
-		return compressImage(imageFile, BitmapFactory.decodeFile(path, options));
+			int photoW = options.outWidth;
+			int photoH = options.outHeight;
+
+			options.inJustDecodeBounds = false;
+			options.inSampleSize = Math.min(photoW / view.getWidth(), photoH / view.getHeight());
+
+			Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+			bitmap = rotateImage(bitmap, rotationInDegrees);
+			return compressImage(imageFile, bitmap);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private static Bitmap compressImage(File imageFile, Bitmap bmp) {
@@ -133,5 +148,18 @@ public class MyHelper {
 			e.printStackTrace();
 		}
 		return bmp;
+	}
+
+	private static Bitmap rotateImage(Bitmap src, float degree) {
+		Matrix matrix = new Matrix();
+		matrix.postRotate(degree);
+		return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
+	}
+
+	private static int exifToDegrees(int exifOrientation) {
+		if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+		else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+		return 0;
 	}
 }

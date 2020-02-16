@@ -4,8 +4,8 @@
 	<string name="action_gallery">Gallery</string>
 	<string name="btn_device">Device</string>
 	<string name="btn_cloud">Cloud</string>
-	<string name="confirm_permission">This app need to access files on your device.</string>
-	<string name="confirm_camera">This app need to access camera on your device.</string>
+	<string name="confirm_storage">This app need to access files on your device.</string>
+	<string name="confirm_camera">This app need to access camera and files on your device.</string>
 	<string name="error_not_found">No text found</string>
 	<string name="error_setup_model">Error while setting up the model</string>
 	<string name="error_image_init">Image classifier has not been initialized; Skipped.</string>

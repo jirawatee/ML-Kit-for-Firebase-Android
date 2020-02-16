@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -51,7 +52,7 @@ public class AutoMLActivity extends BaseActivity {
 		FirebaseModelManager.getInstance().download(remoteModel, conditions).addOnCompleteListener(new OnCompleteListener<Void>() {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {
-				// Success.
+				Toast.makeText(getApplicationContext(), "Remote model is ready", Toast.LENGTH_LONG).show();
 			}
 		});
 

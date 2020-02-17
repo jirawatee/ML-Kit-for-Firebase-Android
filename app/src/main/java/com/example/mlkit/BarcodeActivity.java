@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.mlkit.helpers.MyHelper;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -69,8 +70,11 @@ public class BarcodeActivity extends BaseActivity {
 
 	private void barcodeDetector(Bitmap bitmap) {
 		FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-		//FirebaseVisionBarcodeDetectorOptions.Builder builder = new FirebaseVisionBarcodeDetectorOptions.Builder();
-		//FirebaseVisionBarcodeDetectorOptions options = builder.setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE).build();
+		/*
+		FirebaseVisionBarcodeDetectorOptions options = new FirebaseVisionBarcodeDetectorOptions.Builder()
+				.setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE, FirebaseVisionBarcode.FORMAT_AZTEC)
+				.build();
+		*/
 		FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();
 		detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
 			@Override
@@ -90,6 +94,21 @@ public class BarcodeActivity extends BaseActivity {
 		for (FirebaseVisionBarcode barcode : barcodes) {
 			//int valueType = barcode.getValueType();
 			result.append(barcode.getRawValue() + "\n");
+
+			/*
+			int valueType = barcode.getValueType();
+			switch (valueType) {
+				case FirebaseVisionBarcode.TYPE_WIFI:
+					String ssid = barcode.getWifi().getSsid();
+					String password = barcode.getWifi().getPassword();
+					int type = barcode.getWifi().getEncryptionType();
+					break;
+				case FirebaseVisionBarcode.TYPE_URL:
+					String title = barcode.getUrl().getTitle();
+					String url = barcode.getUrl().getUrl();
+					break;
+			}
+			*/
 		}
 		if ("".equals(result.toString())) {
 			return getString(R.string.error_detect);

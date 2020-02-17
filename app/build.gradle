@@ -42,6 +42,7 @@ dependencies {
 	implementation 'com.google.firebase:firebase-ml-vision:24.0.1'
 	implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.3'
 	implementation 'com.google.firebase:firebase-ml-vision-face-model:19.0.0'
+	implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.2'
 	implementation 'com.google.firebase:firebase-ml-vision-image-label-model:19.0.0'
 
 	implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
